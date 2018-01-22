@@ -1,0 +1,71 @@
+<app-header></app-header>
+<div class="body-content">
+  <h2>报单列表</h2>
+  <p style="margin-bottom: 20px; clear: both; overflow: hidden">
+    <button class="btn btn-info pull-right" routerLink="/users/xutou/{{UserID}}">续投</button>
+  </p>
+  <table class="table">
+    <tr>
+      <th>
+        用户名
+      </th>
+      <th>
+        金额
+      </th>
+      <th>
+        初投/续投
+      </th>
+      <th>
+        冻结状态
+      </th>
+      <th>
+        审核状态
+      </th>
+      <th>
+        登记时间
+      </th>
+      <th>
+        激活时间
+      </th>
+      <th>
+        操作
+      </th>
+    </tr>
+    <tr *ngFor="let item of baodanList; let i = index">
+      <td>
+        {{item['UserID']}}
+      </td>
+      <td>
+        {{item['Moneys']}}
+      </td>
+      <td>
+        {{item['Investment'] == 0 ? '初投' : '续投'}}
+      </td>
+      <td>
+        {{getState(item['State'])}}
+      </td>
+      <td>
+        <span [class.text-danger]="item['Review']==2">{{getReview(item['Review'])}}</span>
+      </td>
+      <td>
+        {{getTimes(item['Times'])}}
+      </td>
+      <td>
+        {{getTimes(item['ATimes'])}}
+      </td>
+      <td>
+        <div *ngIf="item['Review']==0 && item['Action']==1" style="display: inline-block;">
+          <a href="javaScript:;" (click)="Toexamine(item['ID'], 1, i)">通过</a>
+          <i> | </i>
+          <a href="javaScript:;" (click)="Toexamine(item['ID'], 2, i)">拒绝</a>
+          <i> | </i>
+        </div>
+        <a href="javaScript:;" [routerLink]="['/deta', item['ID']]">详情</a>
+      </td>
+    </tr>
+  </table>
+  <div>
+    <a routerLink="/users">返回列表</a>
+  </div>
+  <app-footer></app-footer>
+</div>

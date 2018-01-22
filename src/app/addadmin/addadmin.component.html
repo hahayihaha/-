@@ -1,0 +1,52 @@
+<app-header></app-header>
+<div class="body-content">
+  <h2>添加</h2>
+  <form [formGroup]="formModel">
+    <div class="form-horizontal">
+      <h4>Users</h4>
+      <hr />
+      <div class="form-group">
+        <label class="control-label col-md-2">用户名</label>
+        <div class="col-md-10">
+          <input class="form-control text-box single-line" formControlName="UserID" placeholder="请填写用户名"/>
+          <span class="field-validation-valid text-danger" *ngIf="formModel.get('UserID').invalid && formModel.get('UserID').touched && formModel.get('UserID').value != ''">以字母开头的4-10位英文+数字,不能输入中文</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-md-2">密码</label>
+        <div class="col-md-10">
+          <input type="password" class="form-control text-box single-line" formControlName="PassWord" placeholder="请填密码"/>
+          <span class="field-validation-valid text-danger"></span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-md-2">确认密码</label>
+        <div class="col-md-10">
+          <input class="form-control text-box single-line" formControlName="Qx" placeholder="请再次确认密码"/>
+          <span class="field-validation-valid text-danger" *ngIf="formModel.get('Qx').value != formModel.get('PassWord').value">两次密码不一致</span>
+        </div>
+      </div>
+
+      <!--<div class="form-group">-->
+        <!--<label class="control-label col-md-2">登记日期</label>-->
+        <!--<div class="col-md-10">-->
+          <!--<input id="datetimepicker" (blur)="setSD($event.target.value)" class="form-control text-box single-line" formControlName="Times">-->
+          <!--<span class="field-validation-valid text-danger"></span>-->
+        <!--</div>-->
+      <!--</div>-->
+
+      <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+          <button class="btn" (click)="addAdmin($event)" [disabled]="formModel.invalid || formModel.get('Qx').value != formModel.get('PassWord').value">添加</button>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div>
+    <a routerLink="/admin">返回列表</a>
+  </div>
+  <app-footer></app-footer>
+</div>
+

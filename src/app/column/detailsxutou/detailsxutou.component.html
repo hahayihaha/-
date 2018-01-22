@@ -1,0 +1,97 @@
+<app-header class="noprint"></app-header>
+<div class="body-content">
+  <!--startprint-->
+  <div class="table-wrap" id="print-inner">
+    <h2>华夏影视联盟俱乐部报单信息登记表</h2>
+    <hr/>
+    <p class="IDnumber">
+      <span>俱乐部编号：<i class="id-color">{{data.UserID}}</i></span>
+      <span>俱乐部负责人：<i class="id-color">{{data.BaoDanCenter}}</i></span>
+    </p>
+    <div class="table">
+      <p class="line border-bottom">
+        <span class="title border-right">会员姓名</span>
+        <span class="cont border-right">{{data.Name}}</span>
+        <span class="title border-right">登记日期</span>
+        <span class="cont id-color">{{getTimes(data.Times)}}</span>
+      </p>
+      <p class="line border-bottom">
+        <span class="title border-right">身份证号</span>
+        <span class="cont border-right">{{data.IDNumber}}</span>
+        <span class="title border-right">手机号码</span>
+        <span class="cont">{{data.Phone}}</span>
+      </p>
+      <p class="line border-bottom">
+        <span class="title border-right">初投/复投</span>
+        <span class="cont border-right id-color">{{data.Investment == 0 ? '初投' : '复投'}}</span>
+        <span class="title border-right">微信号</span>
+        <span class="cont">{{data.WX}}</span>
+      </p>
+      <p class="moneys border-bottom">
+        <span class="title border-right">会费金额</span>
+        <span class="sum">人民币（大写）:<i id="money">{{smalltoBIG(data.Moneys)}}</i>（小写）￥<i>{{data.Moneys}}</i></span>
+      </p>
+      <h4 class="first-line border-bottom">会员银行信息</h4>
+      <p class="line border-bottom">
+        <span class="title border-right">户名</span>
+        <span class="cont border-right">{{data.AccountName}}</span>
+        <span class="title border-right">开户银行</span>
+        <span class="cont id-color">{{data.Bank}}</span>
+      </p>
+      <p class="line border-bottom">
+        <span class="title border-right">账号</span>
+        <span class="cont border-right">{{data.BankAccount}}</span>
+        <span class="title border-right">银行支行名称</span>
+        <span class="cont">{{data.BankBranch}}</span>
+      </p>
+      <h4 class="first-line border-bottom">引荐人信息资料</h4>
+      <div class="introducer">
+        <div class="introducer-title">
+          <p class="border-bottom border-right">引荐人</p>
+          <p class="border-bottom border-right">身份证号</p>
+          <p class="border-bottom border-right">手机号码</p>
+        </div>
+        <div class="introducer-cont information">
+          <p class="border-bottom border-right">{{info.Name}}</p>
+          <p class="border-bottom border-right">{{info.IDNumber}}</p>
+          <p class="border-bottom border-right">{{info.Phone}}</p>
+        </div>
+        <div class="introducer-title bank border-bottom border-right">
+          银行信息
+        </div>
+        <div class="introducer-cont bank-information">
+          <p class="border-bottom">户名：{{info.AccountName}}</p>
+          <p class="border-bottom">账号：{{info.BankAccount}}</p>
+          <p class="border-bottom">开户行：{{info.BankBranch}}</p>
+        </div>
+      </div>
+      <h4 class="first-line border-bottom">附件</h4>
+      <div class="Enclosure border-bottom">
+        <div class="ID-bank border-right">
+          <p class="border-bottom">身份证正面影印件</p>
+          <div class="photo border-bottom">
+            <img class="img" src="{{getImages(data.IDPhoto)}}" (change)="hehe()" alt="">
+          </div>
+          <p class="border-bottom">银行卡正面影印件</p>
+          <div class="photo">
+            <img class="img" src="{{getImages(data.BankPhoto)}}" alt="">
+          </div>
+        </div>
+        <div class="bill">
+          <p class="border-bottom">汇款小票原件</p>
+          <div class="photo">
+            <img class="img" src="{{getImages(data.Receipt)}}" alt="">
+          </div>
+        </div>
+      </div>
+      <p class="table-Remarks">备注:</p>
+    </div>
+  </div>
+  <!---endprint-->
+  <p class="noprint">
+    <!--<a>修改</a> |-->
+    <a href="javaScript: history.go(-1);">返回列表</a> |
+    <a href="javaScript: history.go(-1);" (click)="print()">打印</a>
+  </p>
+  <app-footer class="noprint"></app-footer>
+</div>

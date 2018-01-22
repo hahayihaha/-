@@ -1,0 +1,70 @@
+<app-header></app-header>
+<div class="body-content">
+  <h2>续投列表</h2>
+  <div class="form-inline" style="margin-bottom: 20px">
+    <div class="form-group">
+      <label>会员帐号：</label>
+      <input class="form-control" [(ngModel)]="userID" placeholder="会员帐号/姓名">
+    </div>
+    <div class="form-group">
+    <label>推荐人：</label>
+    <input class="form-control" [(ngModel)]="TJID" placeholder="推荐人账号/姓名">
+    </div>
+    <div class="form-group">
+      <label>激活时间</label>
+      <input class="form-control bsrp-time" [(ngModel)]="st" placeholder="日期" (blur)="setST($event.target.value)" type="">
+      -
+      <input class="form-control bsrp-time" [(ngModel)]="ed" placeholder="日期" (blur)="setED($event.target.value)" type="">
+    </div>
+    <button class="btn btn-info" (click)="serach()">搜索</button>
+  </div>
+  <table class="table">
+    <tr>
+      <th>会员账号</th>
+      <th>金额</th>
+      <th>推荐人</th>
+      <th>冻结状态</th>
+      <th>审核状态</th>
+      <th>登记时间</th>
+      <th>激活时间</th>
+      <th>操作</th>
+    </tr>
+    <tr *ngFor="let item of model; let i = index">
+      <td>
+        {{item['UserID']}}
+      </td>
+      <td>
+        {{item['Moneys']}}
+      </td>
+      <td>
+        {{item['TJID']}}
+      </td>
+      <td>
+        <span [class.text-danger]="item['State'] == 2">{{getState(item['State'])}}</span>
+      </td>
+      <td>
+        <span [class.text-danger]="item['Review'] == 2">{{getReview(item['Review'])}}</span>
+      <td>
+        {{getTimes(item['Times'])}}
+      </td>
+      <td>
+        {{getTimes(item['ATimes'])}}
+      </td>
+      <td>
+        <div style="display: inline-block" *ngIf="item['Review'] == 0">
+          <a href="javaScript:;" (click)="audit(item['ID'], i, 1)">通过</a>
+          <a href="javaScript:;" (click)="audit(item['ID'], i, 2)"> | 拒绝 | </a>
+        </div>
+        <a [routerLink]="['/deta', item['ID']]">详情</a>
+      </td>
+    </tr>
+  </table>
+
+  <div class="pagebar">
+    <div class="page">
+      <app-pagination conf="Pagination"></app-pagination>
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+</div>

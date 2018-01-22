@@ -1,0 +1,59 @@
+<app-header></app-header>
+<div class="body-content">
+  <h2>添加</h2>
+  <form [formGroup]="formModel">
+    <div class="form-horizontal">
+      <hr />
+
+      <div class="form-group">
+        <label class="control-label col-md-2">会员账号</label>
+        <div class="col-md-10">
+          <input class="form-control text-box single-line" formControlName="UserID" [readonly]="true"/>
+        </div>
+      </div>
+
+      <div class="form-group" [class.has-error]="formModel.get('TJID').touched && formModel.get('TJID').invalid">
+        <label class="control-label col-md-2">推荐人</label>
+        <div class="col-md-10">
+          <input class="form-control text-box single-line" formControlName="TJID"/>
+          <span class="field-validation-valid text-danger" *ngIf="formModel.get('TJID').touched && formModel.get('TJID').invalid">请填写推荐人</span>
+          <span class="field-validation-valid text-danger" *ngIf="formModel.get('TJID').dirty && formModel.get('tjname').invalid">推荐人不存在</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-md-2">推荐人姓名</label>
+        <div class="col-md-10">
+          <input class="form-control text-box single-line" formControlName="tjname" [readonly]="true"/>
+        </div>
+      </div>
+
+      <div class="form-group" [class.has-error]="formModel.get('Moneys').touched && formModel.get('Moneys').invalid">
+        <label class="control-label col-md-2">会费金额</label>
+        <div class="col-md-10">
+          <input type="number" formControlName="Moneys" min="10000" class="form-control" value="10000" />
+          <span class="field-validation-valid text-danger" *ngIf="formModel.get('Moneys').touched && formModel.get('Moneys').invalid">会费金额为万的整数倍</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-md-2">汇款小票</label>
+        <div class="col-md-10">
+          <input type="file" id="img3" ng2FileSelect [uploader]="uploader" (change)="file()" />
+          <span class="field-validation-valid text-danger" ></span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+          <button class="btn btn-success" (click)="onSubmit($event)" [disabled]="formModel.invalid">确定</button>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div>
+    <a href="javaScript:history.go(-1);">返回列表</a>
+  </div>
+
+  <app-footer></app-footer>
+</div>

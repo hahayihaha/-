@@ -1,0 +1,77 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+html,body{
+  width: 100%;
+  height: 100%;
+}
+
+i{
+  font-style: normal;
+}
+
+/********************************Users**********************************************/
+/* Set padding to keep content from hitting the edges */
+.body-content {
+  padding-top: 50px;
+  padding-bottom: 20px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists
+   will truncate terms that are too long to fit in the left column
+*/
+.dl-horizontal dt {
+  white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+.body-content{
+  input,
+  select,
+  textarea {
+    max-width: 280px;
+  }
+}
+
+.table thead > tr > th, .table tbody > tr > th, .table tfoot > tr > th, .table thead > tr > td, .table tbody > tr > td, .table tfoot > tr > td{ vertical-align:middle;}
+.table tr{ vertical-align:middle!important;}
+
+/*分页*/
+.pagination{ margin: 20px 0 0 0; padding: 0px;
+  li>span{ color: #000000; text-shadow: 0 1px 0 #ffffff; border-color: #dddddd #dddddd #cccccc;
+    padding: 4px 11px; background: #f5f5f5; cursor: pointer;
+    background-image: linear-gradient(to top, #ffffff, #dadada);
+    &:hover{ color:#000000; };
+  }
+  li.active span{background-color: #414141 !important; background-image: linear-gradient(to top, #555555, #222222);
+    border-color: #dddddd #dddddd #cccccc;
+    &:hover{border-color: #dddddd #dddddd #cccccc;};
+  }
+  li.disabled a{ color: #AAAAAA;
+    &:hover{ color:#AAAAAA; };
+  }
+  li.text{ height: 30px; line-height: 30px; padding: 0px 5px;}
+  li.text .num{width: 30px; height: 25px; line-height: 25px;}
+}
+
+@media screen and (min-width: 414px) {
+  .form-control{ display: inline-block;}
+}
+@media screen and (max-width: 414px) {
+  .body-content{
+    input,
+    select,
+    textarea {
+      max-width: 100%;
+    }
+  }
+}
+@media print {
+  .noprint{display: none};
+  #print-inner{ margin: 0 auto;}
+  #print-inner .table{ border: 1px solid black;}
+  #print-inner .table .photo{ padding: 0px 0 0 1px;}
+}

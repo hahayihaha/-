@@ -1,0 +1,153 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+.table-wrap{
+  width: 700px;
+  margin: 70px auto 20px auto;
+}
+.table-wrap p{ margin:0;}
+.table-wrap h2,h4{
+  text-align: center;
+  margin:0;
+}
+.IDnumber{
+  display: flex;
+  padding-top: 20px;
+  margin-bottom: 5px;
+  font-weight: 700;
+}
+.IDnumber span{
+  flex: 1;
+}
+.id-color{
+  color: #fb6b6d;
+}
+.table{
+  width: 100%;
+  border: 2px solid black;
+}
+.line{
+  display: flex;
+  height: 30px;
+}
+.border-bottom{
+  border-bottom: 1px solid black;
+}
+.introducer-cont .border-bottom { height:30px;}
+
+.line .title {
+  flex: 1;
+  text-align: center;
+  line-height: 30px;
+  font-weight: 700;
+}
+.line .cont{
+  flex: 2;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+}
+.border-right{
+  border-right: 1px solid black;
+}
+.moneys{
+  display: flex;
+  height: 30px;
+}
+.moneys .title{
+  flex: 1;
+  text-align: center;
+  line-height: 30px;
+  font-weight: 700;
+}
+.moneys .sum{
+  flex: 5;
+  line-height: 30px;
+  font-weight: 700;
+}
+.moneys .sum i{
+  margin-right: 70px;
+  margin-left: 70px;
+  font-style: normal;
+}
+.first-line{
+  height: 30px;
+  line-height: 30px;
+}
+.introducer{
+  display: flex;
+}
+.introducer-title{
+  flex: 1;
+}
+.introducer-title p{
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+}
+.introducer-cont{
+  flex: 2;
+  height: 30px;
+  line-height: 30px;
+}
+.information p{
+  text-align: center;
+}
+.bank-information p{
+  font-weight: 700;
+}
+.introducer .bank{
+  height: 90px;
+  line-height: 90px;
+  text-align: center;
+}
+.Enclosure{
+  display: flex;
+}
+.ID-bank{
+  flex: 1;
+  width: 300px;
+}
+.ID-bank p{
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.ID-bank .photo{
+  height: 200px; line-height: 200px;
+  width: 347.5px;
+  text-align: center;
+}
+.ID-bank .photo.border-bottom {
+  overflow: hidden;
+}
+.ID-bank .photo img {
+  vertical-align: middle;border: 0; margin: -2px 0 0 0; padding: 0; font-size: 0;
+}
+.bill {
+  flex: 1;
+  height: 500px;
+}
+.bill p{
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-weight: 700;
+}
+.bill .photo{
+  overflow: hidden;
+  height:470px;
+}
+.bill .photo img {
+  vertical-align: middle;
+  display: block;
+  margin: 0 auto;
+}
+.table-Remarks{
+  height: 30px;
+  line-height: 30px;
+  font-weight: 700;
+}

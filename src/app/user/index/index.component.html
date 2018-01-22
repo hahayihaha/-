@@ -1,0 +1,88 @@
+<app-header></app-header>
+<div class="body-content">
+<h2>会员管理</h2>
+  <br>
+<div class="form-inline">
+  <div class="form-group">
+    <label>会员帐号：</label>
+    <input class="form-control" [(ngModel)]="userID" placeholder="会员帐号/姓名">
+  </div>
+  <!--<div class="form-group">-->
+    <!--<label>推荐人：</label>-->
+    <!--<input class="form-control" [(ngModel)]="TJID" placeholder="推荐人账号/姓名">-->
+  <!--</div>-->
+  <div class="form-group">
+    <label>办事处：</label>
+    <input class="form-control" [(ngModel)]="BAC" placeholder="办事处">
+  </div>
+  <div class="form-group">
+    <label>激活时间</label>
+    <input class="form-control bsrp-time" [(ngModel)]="st" placeholder="日期" (blur)="setST($event.target.value)" type="">
+    -
+    <input class="form-control bsrp-time" [(ngModel)]="ed" placeholder="日期" (blur)="setED($event.target.value)" type="">
+  </div>
+  <button class="btn btn-info" (click)="serach()">搜索</button>
+  <p style="float: right; display: block;">
+    <a routerLink="/users/add" class="btn btn-success">添加会员</a>
+    <a href="javaScript:;" class="btn btn-success" (click)="export()">导出表格</a>
+  </p>
+</div>
+<br>
+<table class="table">
+  <tr>
+    <th>
+      注册时间
+    </th>
+    <th>
+      会员账号
+    </th>
+    <th>
+      姓名
+    </th>
+    <!--<th>-->
+      <!--推荐人-->
+    <!--</th>-->
+    <th>
+      会费金额
+    </th>
+    <th>
+      冻结状态
+    </th>
+    <th>
+      激活状态
+    </th>
+    <th>
+      操作
+    </th>
+  </tr>
+
+  <tr *ngFor="let x of model; let i = index">
+    <td>{{GetTimes(x.Times)}}</td>
+    <td>{{x.UserID}}</td>
+    <td>{{x.Name}}</td>
+    <!--<td>{{x.TJID}}</td>-->
+    <td>{{x.Moneys ==''?0:x.Moneys}}</td>
+    <td [class.text-danger]="x.IsFreeze == 1">{{x.IsFreeze == 0 ? '正常' : '冻结'}}</td>
+    <td><span [class.text-danger]="x.Action==0">{{x.Action == 0 ? '未激活': '已激活'}}</span></td>
+    <td>
+      <a routerLink="/users/edit/{{x.ID}}">修改</a>
+      <a *ngIf="x.Action == 0" href="javaScript:;" (click)="activation(x.ID, i)"> | 激活</a>
+      <a [routerLink]="['/column', x.ID]"> | 报单详情</a>
+      <a [routerLink]="['/details', x.ID]"> | 会员详情</a>
+      <a href="javaScript:;" *ngIf="x['IsFreeze'] == 0" (click)="freeze(x['ID'], i)"> | 冻结会员</a>
+    </td>
+  </tr>
+
+</table>
+
+  <div class="pagebar">
+    <div class="page">
+      <app-pagination conf="Pagination"></app-pagination>
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+</div>
+
+
+

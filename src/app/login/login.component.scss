@@ -1,0 +1,157 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+html,body{
+  width: 100%;
+  height: 100%;
+}
+input, select, textarea{
+  max-width: none;
+}
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px white inset;
+}
+.back{
+  height: 100%;
+  background-image: url("../../assets/img/back.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  position: relative;
+}
+@media screen and (min-device-width: 760px){
+  .login{
+    position: absolute;
+    width: 620px;
+    height: 540px;
+    left: 50%;
+    margin-left: -310px;
+    top: 50%;
+    margin-top: -270px;
+  }
+  .login h2{
+    font-size: 62px;
+    font-family: "新宋体";
+    width: 430px;
+    text-align: center;
+    margin: 0 auto;
+    border-bottom: 1px solid black;
+  }
+  .login .Eng{
+    margin-top: 10px;
+    width: 430px;
+    text-align: center;
+    margin: 10px auto;
+    font-size: 36px;
+    padding-bottom: 10px;
+  }
+  .login .login-wrap{
+    width: 100%;
+    background: white;
+    padding-top: 60px;
+    padding-bottom: 70px;
+  }
+  .login .login-wrap-input{
+    width: 450px;
+    height: 150px;
+    border: 1px solid #c0c1c0;
+    margin: 0 auto;
+  }
+  .login .login-wrap-input input{
+    height: 50px;
+    display: block;
+    width: 430px;
+    margin: 15px auto;
+    border-top: 0; border-left: 0; border-right: 0;
+    border-bottom: 1px solid #c0c1c0;
+    outline: none;
+    font-size: 18px;
+  }
+  .login .login-wrap-input p{
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+    cursor: pointer;
+  }
+  .login .login-wrap button{
+    width: 450px;
+    height: 50px;
+    background: #92c65f;
+    color: white;
+    border: 0;
+    cursor: pointer;
+    font-size: 18px;
+    margin: 38px auto 0 auto;
+    display: block;
+    position: relative;
+    line-height: 50px;
+  }
+  .login .login-wrap button a{
+    position: absolute;
+    font-weight: 800;
+    right: 20px;
+    color: white;
+  }
+}
+@media screen and (max-device-width: 760px) {
+  .login{
+    position: absolute;
+    width: 21.25em;
+    height: 11.25em;
+    left: 50%;
+    margin-left: -10.625em;
+    top: 50%;
+    margin-top: -9.6215em;
+  }
+  .login h2{
+    text-align: center;
+    margin: 0 auto;
+    border-bottom: 1px solid black;
+  }
+  .login .Eng{
+    margin-top: 10px;
+    text-align: center;
+    margin: 10px auto;
+    padding-bottom: 10px;
+  }
+  .login .login-wrap{
+    background: white;
+    padding-top: 20px;
+    padding-bottom: 30px;
+  }
+  .login .login-wrap-input{
+    //border: 1px solid #c0c1c0;
+    margin: 0 auto;
+  }
+  .login .login-wrap-input input{
+    height: 20px;
+    display: block;
+    width: 80%;
+    margin: 5px auto;
+    border-top: 0; border-left: 0; border-right: 0;
+    border-bottom: 1px solid #c0c1c0;
+    outline: none;
+    font-size: 14px;
+  }
+  .login .login-wrap button{
+    width: 80%;
+    height: 20px;
+    background: #92c65f;
+    color: white;
+    border: 0;
+    cursor: pointer;
+    font-size: 12px;
+    margin: 20px auto 0 auto;
+    display: block;
+    position: relative;
+    line-height: 20px;
+  }
+  .login .login-wrap button a{
+    position: absolute;
+    font-weight: 800;
+    right: 20px;
+    color: white;
+  }
+}
