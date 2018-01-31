@@ -60,6 +60,7 @@
           <a href="javaScript:;" (click)="Toexamine(item['ID'], 2, i)">拒绝</a>
           <i> | </i>
         </div>
+        <a [routerLink]="['/column/xutouedit', item['ID']]">修改</a>
         <a href="javaScript:;" [routerLink]="['/deta', item['ID']]">详情</a>
       </td>
     </tr>

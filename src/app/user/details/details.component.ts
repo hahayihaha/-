@@ -14,7 +14,11 @@ export class DetailsComponent implements OnInit {
   public ID:number;
   public data: any = {};
   public info: any = {};
-
+  public img1 = '';
+  public img2 = '';
+  public img3 = '';
+  public infoBankBranch;
+  public show: boolean;
   constructor(
     info: ActivatedRoute,
     public http: HttpClient
@@ -26,11 +30,20 @@ export class DetailsComponent implements OnInit {
   ngOnInit() {
 
     this.http.get(localStorage['http'] + '/manage/Users/GetView?id=' + this.ID).subscribe( response => {
+      console.log(response)
       this.data = (JSON.parse(response['data']));
       this.info = (JSON.parse(response['info']));
+      this.infoBankBranch = this.info['BankBranch'];
+      if(this.infoBankBranch.length > 16){
+        this.show = false;
+      }else {
+        this.show = true;
+      };
+      this.img1 = localStorage['http']+'/images/' + this.data['IDPhoto'];
+      this.img2 = localStorage['http']+'/images/' + this.data['BankPhoto'];
+      this.img3 = localStorage['http']+'/images/' + this.data['Receipt'];
       this.hehe();
-    } )
-
+    } );
   }
 
   getTimes(times){
@@ -45,30 +58,32 @@ export class DetailsComponent implements OnInit {
     window.print();
   }
 
-  getImages(url){
-    if(isNullOrUndefined(url))
-    {
-      return '';
-    }
-    return localStorage['http']+'/images/' + url;
-  }
-
   hehe() {
-    setTimeout(function(){
-      $(".img").each(function () {
-        if($(this).width() > 0)
-        {
-          const w = $(this).width();
-          const h = $(this).height();
-          if(w > h)
+    var i = 0;
+    var time = window.setInterval(function(){
+      i++;
+      if(i > 100)
+      {
+        window.clearTimeout(time);
+      }
+      if($(".img:eq(0)").width() > 0 && $(".img:eq(1)").width() > 0 && $(".img:eq(2)").width() > 0)
+      {
+        $(".img").each(function () {
+          if($(this).width() > 0)
           {
-            $(this).attr("width",'100%');
-          }else
-          {
-            $(this).attr("height",'100%');
+            var w = $(this).width();
+            var h = $(this).height();
+            if(w > h)
+            {
+              $(this).attr("width",'100%');
+            }else
+            {
+              $(this).attr("height",'100%');
+            }
           }
-        }
-      })
+        });
+        window.clearTimeout(time);
+      }
     },1);
   }
 

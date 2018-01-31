@@ -7,9 +7,21 @@ import { environment} from '../environments/environment';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = '华夏影视联盟俱乐部';
+  title = '俱乐部管理系统';
+
+  public regStr_ie
 
   constructor() {
     localStorage['http'] = environment.ApiUrl;
   }
+
+  ngOnInit(){
+
+  }
+
+  //当路由跳转之后
+  onDeactivate(){
+    scroll(0, 0);
+  }
+
 }

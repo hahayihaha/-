@@ -4,12 +4,56 @@
   <meta charset="utf-8">
   <title>俱乐部管理系统</title>
   <base href="/">
-
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="renderer" content="webkit">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <script src="assets/js/imgauto.js"></script>
 </head>
 <body>
   <app-root></app-root>
+  <script>
+    function IEVersion() {
+      var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+      var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1; //判断是否IE<11浏览器
+      var isEdge = userAgent.indexOf("Edge") > -1 && !isIE; //判断是否IE的Edge浏览器
+      var isIE11 = userAgent.indexOf('Trident') > -1 && userAgent.indexOf("rv:11.0") > -1;
+      if(isIE) {
+        var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
+        reIE.test(userAgent);
+        var fIEVersion = parseFloat(RegExp["$1"]);
+        if(fIEVersion == 7) {
+          window.regStr_ie = 7;
+          return window.regStr_ie;
+        } else if(fIEVersion == 8) {
+          window.regStr_ie = 8;
+          return window.regStr_ie;
+        } else if(fIEVersion == 9) {
+          window.regStr_ie = 9;
+          return window.regStr_ie;
+        } else if(fIEVersion == 10) {
+          window.regStr_ie = 10
+          return window.regStr_ie;
+        } else {
+          window.regStr_ie = 6
+          return window.regStr_ie;//IE版本<=7
+        }
+      } else if(isEdge) {
+        return 'edge';//edge
+      } else if(isIE11) {
+        window.regStr_ie == 11
+        return window.regStr_ie; //IE11
+      }
+    }
+
+    var ie = IEVersion();
+
+    if(window.regStr_ie <= 8){
+      var ie = window.confirm('浏览器版本过低，请前往下载新的浏览器！');
+      if(ie){
+        window.location.href = "http://www.google.cn/chrome/browser/desktop/index.html";
+      }
+    };
+
+  </script>
 </body>
 </html>

@@ -56,7 +56,9 @@ export class XutouComponent implements OnInit {
       // 上传
       this.uploader.queue[this.uploader.queue.length - 1].onSuccess = function (response, status, headers) {
         img1 = response;
-        that.formModel.get('Receipt').setValue(img1.replace(/\"/g, ''));
+        if(img1 !== ''){
+          that.formModel.get('Receipt').setValue(img1.replace(/\"/g, ''));
+        }
         this.uploader.clearQueue(); // 清除队列，如果不清除的话，还会继续上传第一个队列的图片
       };
       this.uploader.queue[this.uploader.queue.length - 1].upload(); // 开始上传

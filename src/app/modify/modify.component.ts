@@ -31,10 +31,6 @@ export class ModifyComponent implements OnInit {
     this.ID = this.info.snapshot.params['id'];
   }
 
-  change(event){
-    alert(1)
-  }
-
   modify(event){
     event.target.disabled = true;
     this.http.put(localStorage['http'] + '/Action/Admins/PutPass/' + this.ID, this.formModel.value).subscribe( response =>{

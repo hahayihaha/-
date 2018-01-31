@@ -1,0 +1,58 @@
+<app-header></app-header>
+<div class="body-content">
+  <h2>积分流水</h2>
+  <div class="form-inline" style="margin-top: 20px; margin-bottom: 15px">
+    <div class="form-group">
+      <label>会员帐号：</label>
+      <input class="form-control" [(ngModel)]="un" placeholder="会员帐号/姓名">
+    </div>
+    <div class="form-group">
+      <label>交易类型：</label>
+      <!--<input class="form-control" [(ngModel)]="t" placeholder="交易类型">-->
+      <select name="" id="" class="form-control" (change)="changeT($event.target.value)">
+        <option disabled selected value>--交易类型--</option>
+        <option value="天天奖励">天天奖励</option>
+        <option value="提现">提现</option>
+        <option value="取消提现">取消提现</option>
+        <option value="提现拒绝">提现拒绝</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>时间：</label>
+      <input class="form-control bsrp-time" [(ngModel)]="sd" placeholder="开始时间" (blur)="setSD($event.target.value)" type="">
+      -
+      <input class="form-control bsrp-time" [(ngModel)]="ed" placeholder="结束时间" (blur)="setED($event.target.value)" type="">
+    </div>
+    <button class="btn btn-info" (click)="serach()">搜索</button>
+  </div>
+  <table class="table">
+    <tr>
+      <th>用户名</th>
+      <th>操作时间</th>
+      <th>交易人</th>
+      <th>交易类型</th>
+      <th>收入</th>
+      <th>支出</th>
+      <th>余额</th>
+      <th>货币类型</th>
+    </tr>
+    <tr *ngFor="let item of model">
+      <td>{{item['UserID']}}</td>
+      <td>{{GetTimes(item['Times'])}}</td>
+      <td>{{item['TradUserID']}}</td>
+      <td>{{item['Reason']}}</td>
+      <td>{{item['ShouRu']}}</td>
+      <td>{{item['ZhiChu']}}</td>
+      <td>{{item['Balance']}}</td>
+      <td>{{item['MoneyType']}}</td>
+    </tr>
+  </table>
+
+  <div class="pagebar">
+    <div class="page">
+      <app-pagination conf="Pagination"></app-pagination>
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+</div>

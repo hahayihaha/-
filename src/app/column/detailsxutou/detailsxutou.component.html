@@ -5,8 +5,9 @@
     <h2>华夏影视联盟俱乐部报单信息登记表</h2>
     <hr/>
     <p class="IDnumber">
-      <span>俱乐部编号：<i class="id-color">{{data.UserID}}</i></span>
+      <span>会员编号：<i class="id-color">{{data.UserID}}</i></span>
       <span>俱乐部负责人：<i class="id-color">{{data.BaoDanCenter}}</i></span>
+      <span>负责人姓名：<i class="id-color">{{data.FZR}}</i></span>
     </p>
     <div class="table">
       <p class="line border-bottom">
@@ -22,8 +23,8 @@
         <span class="cont">{{data.Phone}}</span>
       </p>
       <p class="line border-bottom">
-        <span class="title border-right">初投/复投</span>
-        <span class="cont border-right id-color">{{data.Investment == 0 ? '初投' : '复投'}}</span>
+        <span class="title border-right">初投/续投</span>
+        <span class="cont border-right id-color">{{data.Investment == 0 ? '初投' : '续投'}}</span>
         <span class="title border-right">微信号</span>
         <span class="cont">{{data.WX}}</span>
       </p>
@@ -62,7 +63,7 @@
         <div class="introducer-cont bank-information">
           <p class="border-bottom">户名：{{info.AccountName}}</p>
           <p class="border-bottom">账号：{{info.BankAccount}}</p>
-          <p class="border-bottom">开户行：{{info.BankBranch}}</p>
+          <p class="border-bottom"><span *ngIf="show">开户行：</span>{{info.BankBranch}}</p>
         </div>
       </div>
       <h4 class="first-line border-bottom">附件</h4>
@@ -70,17 +71,17 @@
         <div class="ID-bank border-right">
           <p class="border-bottom">身份证正面影印件</p>
           <div class="photo border-bottom">
-            <img class="img" src="{{getImages(data.IDPhoto)}}" (change)="hehe()" alt="">
+            <img class="img" src="{{img1}}" alt="">
           </div>
           <p class="border-bottom">银行卡正面影印件</p>
-          <div class="photo">
-            <img class="img" src="{{getImages(data.BankPhoto)}}" alt="">
+          <div class="photo" style="overflow: hidden">
+            <img class="img" src="{{img2}}" alt="">
           </div>
         </div>
         <div class="bill">
           <p class="border-bottom">汇款小票原件</p>
           <div class="photo">
-            <img class="img" src="{{getImages(data.Receipt)}}" alt="">
+            <img class="img" src="{{img3}}" alt="">
           </div>
         </div>
       </div>

@@ -47,7 +47,7 @@ export class XutoulistComponent implements OnInit {
   }
 
   private initList(): void {
-    const page = this.pagination.currentPage;
+    var page = this.pagination.currentPage;
     let url = localStorage['http'] + '/manage/BaoDans/GetBaoDan?num=' + page;
     if (this.userID !== '') {
       url += '&n=' + this.userID;

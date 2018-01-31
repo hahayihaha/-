@@ -1,6 +1,7 @@
 import {Component, OnInit, Output} from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import {Pagination} from '../../widgets/pagination/pageconfig';
+import {isNullOrUndefined} from "util";
 declare var $: any;
 
 @Component({
@@ -18,6 +19,7 @@ export class IndexComponent implements OnInit {
   BAC = '';
   st = '';
   ed = '';
+  public params: Array<any> = [];
   constructor(public http: HttpClient) {
 
   }
@@ -64,8 +66,33 @@ export class IndexComponent implements OnInit {
     this.http.get(url)
       .subscribe(v => {
         this.model = JSON.parse(v['data']);
-        this.pagination.totalItems = v['total'];
+        this.pagination.totalItems = v['Total'];
       });
+  }
+
+  checkBox(event, ID, i){
+    if(event){
+      let params = {
+        checked: event,
+        ID: ID,
+        index: i
+      }
+      this.params.push(params);
+    }
+    if(!event){
+      let params = {
+        checked: event,
+        ID: ID,
+        index: i
+      }
+      for(var s = 0; s < this.params.length; s++){
+        if(!isNullOrUndefined(params['ID'])){
+          if(params['ID'] == this.params[s]['ID']){
+            this.params.splice(s, 1);
+          }
+        }
+      }
+    }
   }
 
   GetTimes(time) {
@@ -111,18 +138,69 @@ export class IndexComponent implements OnInit {
   }
 
   //冻结会员
-  freeze(ID, i){
-    let con = window.confirm('是否确认冻结会员');
-    if (con){
-      this.http.get(localStorage['http'] + '/manage/Users/Freeze?id=' + ID).subscribe(response => {
-        console.log(response);
-        if (response){
-          alert('冻结成功');
-          this.model[i]['IsFreeze'] = 1;
+  freeze(){
+    if(this.params.length){
+      let con = window.confirm('是否确认冻结会员');
+      if (con) {
+        for (var i = 0; i < this.params.length; i++) {
+          let Index = [];
+          Index.push(this.params[i]['index'])
+          this.http.get(localStorage['http'] + '/manage/Users/Freeze?id=' + this.params[i]['ID']).subscribe(response => {
+            if (response) {
+              alert('冻结成功');
+              for (var j = 0; j < Index.length; j++){
+                if (!isNullOrUndefined(Index[j])){
+                  this.model[Index[j]]['IsFreeze'] = 1;
+                }
+              }
+            }
+          }, error => {
+            alert(error['error']['Message'])
+          });
         }
-      }, error => {
-        alert(error['error']['Message'])
-      });
+      }
+    }else {
+      alert('请选择会员！');
+    }
+  }
+
+  //设为办事处
+  setupBsc(){
+    if(this.params.length){
+      let con = window.confirm('是否确认设置为办事处');
+      if (con) {
+        for (var i = 0; i < this.params.length; i++) {
+          this.http.post(localStorage['http'] + '/manage/Users/SetBansc/' + this.params[i]['ID'], {}).subscribe( response => {
+            if(response){
+              alert('设置成功');
+            }
+          }, error => {
+            alert(error['error']['Message']);
+          } )
+        }
+      }
+    }else {
+      alert('请选择会员！')
+    }
+  }
+
+  //取消办事处
+  cancelBsc(){
+    if(this.params.length){
+      let con = window.confirm('是否确认取消办事处');
+      if (con) {
+        for (var i = 0; i < this.params.length; i++) {
+          this.http.post(localStorage['http'] + '/manage/Users/DelBansc/' + this.params[i]['ID'], {}).subscribe( response => {
+            if(response){
+              alert('设置成功');
+            }
+          }, error => {
+            alert(error['error']['Message'])
+          } )
+        }
+      }
+    }else {
+      alert('请选择会员！')
     }
   }
 

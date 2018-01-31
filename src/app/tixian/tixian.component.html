@@ -1,0 +1,64 @@
+<app-header></app-header>
+<div class="body-content">
+  <h2>提现列表</h2>
+  <div class="form-inline" style="margin-top: 20px; margin-bottom: 15px">
+    <div class="form-group">
+      <label>会员帐号：</label>
+      <input class="form-control" [(ngModel)]="un" placeholder="会员帐号/姓名">
+    </div>
+    <div class="form-group">
+      <label>开户行:</label>
+      <!--<input class="form-control" placeholder="开户行">-->
+      <select [(ngModel)]="bank" class="form-control">
+        <option disabled selected value>--开户银行--</option>
+        <option value="中国工商银行">中国工商银行</option>
+        <option value="中国建设银行">中国建设银行</option>
+        <option value="中国农业银行">中国农业银行</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>时间：</label>
+      <input class="form-control bsrp-time" [(ngModel)]="sd" placeholder="开始时间" (blur)="setSD($event.target.value)" type="">
+      -
+      <input class="form-control bsrp-time" [(ngModel)]="ed" placeholder="结束时间" (blur)="setED($event.target.value)" type="">
+    </div>
+    <button class="btn btn-info" (click)="serach()">搜索</button>
+    <button class="btn btn-success" (click)="export()">导出数据</button>
+  </div>
+  <table class="table">
+    <tr>
+      <th>提现时间</th>
+      <th>会员账号</th>
+      <th>姓名</th>
+      <!--<th>处理状态</th>-->
+      <th>提现金额</th>
+      <th>手续费</th>
+      <th>实发金额</th>
+      <th>开户银行</th>
+      <th>银行账号</th>
+      <th>开户行所在地</th>
+      <th>处理时间</th>
+    </tr>
+    <tr *ngFor="let item of model">
+      <td>{{GetTimes(item['Times'])}}</td>
+      <td>{{item['UserID']}}</td>
+      <td>{{item['Name']}}</td>
+      <!--<td>{{item['State']}}</td>-->
+      <td>{{item['Moneys']}}</td>
+      <td>{{item['Fuwufei']}}</td>
+      <td>{{item['Shifa']}}</td>
+      <td>{{item['Bank']}}</td>
+      <td>{{item['BankAccount']}}</td>
+      <td>{{item['BankBranch']}}</td>
+      <td>{{GetTimes(item['ATimes'])}}</td>
+    </tr>
+  </table>
+
+  <div class="pagebar">
+    <div class="page">
+      <app-pagination conf="Pagination"></app-pagination>
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+</div>

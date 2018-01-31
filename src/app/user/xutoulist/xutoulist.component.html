@@ -1,6 +1,6 @@
 <app-header></app-header>
 <div class="body-content">
-  <h2>续投列表</h2>
+  <h2>报单列表</h2>
   <div class="form-inline" style="margin-bottom: 20px">
     <div class="form-group">
       <label>会员帐号：</label>
@@ -21,10 +21,12 @@
   <table class="table">
     <tr>
       <th>会员账号</th>
+      <th>姓名</th>
       <th>金额</th>
       <th>推荐人</th>
-      <th>冻结状态</th>
+      <th>状态</th>
       <th>审核状态</th>
+      <th>初投/续投</th>
       <th>登记时间</th>
       <th>激活时间</th>
       <th>操作</th>
@@ -34,16 +36,23 @@
         {{item['UserID']}}
       </td>
       <td>
+        {{item['Name']}}
+      </td>
+      <td>
         {{item['Moneys']}}
       </td>
       <td>
         {{item['TJID']}}
       </td>
       <td>
-        <span [class.text-danger]="item['State'] == 2">{{getState(item['State'])}}</span>
+        <span [class.text-danger]="item['State'] != 0">{{getState(item['State'])}}</span>
       </td>
       <td>
         <span [class.text-danger]="item['Review'] == 2">{{getReview(item['Review'])}}</span>
+      </td>
+      <td>
+        {{item['Investment'] == 0 ? '初投' : '续投'}}
+      </td>
       <td>
         {{getTimes(item['Times'])}}
       </td>
@@ -51,7 +60,7 @@
         {{getTimes(item['ATimes'])}}
       </td>
       <td>
-        <div style="display: inline-block" *ngIf="item['Review'] == 0">
+        <div style="display: inline-block" *ngIf="item['Review'] == 0 && item['Investment'] ==1">
           <a href="javaScript:;" (click)="audit(item['ID'], i, 1)">通过</a>
           <a href="javaScript:;" (click)="audit(item['ID'], i, 2)"> | 拒绝 | </a>
         </div>

@@ -20,10 +20,14 @@ import { DetailsxutouComponent } from './column/detailsxutou/detailsxutou.compon
 import { EditComponent } from './user/edit/edit.component';
 import { DetailsComponent } from './user/details/details.component';
 import { XutoulistComponent } from './user/xutoulist/xutoulist.component';
+import { XutoueditComponent } from './column/xutouedit/xutouedit.component';
+import { LiushuiComponent } from './liushui/liushui.component';
+import { TixianComponent } from './tixian/tixian.component';
 
 const root: Routes = [
-  {path: '', redirectTo: '/login', pathMatch: 'full'},
+  {path: '', redirectTo: '/', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
+
   {
     path: '',
     canActivate: [AuthGuard],
@@ -31,11 +35,17 @@ const root: Routes = [
       {path: 'admin', component: AdminComponent},
       {path: 'addadmin', component: AddadminComponent},
       {path: 'modify/:id', component: ModifyComponent},
+      //流水
+      {path: 'liushui', component: LiushuiComponent},
+      //提现
+      {path: 'tixian', component: TixianComponent},
       {path: 'users', component: IndexComponent},
       {path: 'users/add', component: AddComponent},
-      {path: 'users/xutoulist', component: XutoulistComponent},
       {path: 'users/edit/:id', component: EditComponent},
+      //续投
+      {path: 'users/xutoulist', component: XutoulistComponent},
       {path: 'users/xutou/:id', component: XutouComponent},
+      {path: 'column/xutouedit/:id', component: XutoueditComponent},
       {path: 'details/:id', component: DetailsComponent},
       {path: 'column/:id', component: ColumnComponent},
       {path: 'deta/:id', component: DetailsxutouComponent},
@@ -60,6 +70,9 @@ const root: Routes = [
     EditComponent,
     DetailsComponent,
     XutoulistComponent,
+    XutoueditComponent,
+    LiushuiComponent,
+    TixianComponent,
   ],
   imports: [
     FormsModule,

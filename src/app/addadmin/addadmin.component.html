@@ -5,10 +5,13 @@
     <div class="form-horizontal">
       <h4>Users</h4>
       <hr />
+      <div style="overflow: hidden; width: 0; height: 0;">
+        <input type="password" id="" disabled>
+      </div>
       <div class="form-group">
         <label class="control-label col-md-2">用户名</label>
         <div class="col-md-10">
-          <input class="form-control text-box single-line" formControlName="UserID" placeholder="请填写用户名"/>
+          <input class="form-control text-box single-line" id="0" formControlName="UserID" placeholder="请填写用户名" autocomplete="off"/>
           <span class="field-validation-valid text-danger" *ngIf="formModel.get('UserID').invalid && formModel.get('UserID').touched && formModel.get('UserID').value != ''">以字母开头的4-10位英文+数字,不能输入中文</span>
         </div>
       </div>
@@ -16,7 +19,7 @@
       <div class="form-group">
         <label class="control-label col-md-2">密码</label>
         <div class="col-md-10">
-          <input type="password" class="form-control text-box single-line" formControlName="PassWord" placeholder="请填密码"/>
+          <input type="password" class="form-control text-box single-line" formControlName="PassWord" placeholder="请填密码" autocomplete="off"/>
           <span class="field-validation-valid text-danger"></span>
         </div>
       </div>

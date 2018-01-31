@@ -31,12 +31,12 @@ export class EditComponent implements OnInit {
       IDNumber: ['', [Validators.required, Validators.pattern('(^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$)|(^[1-9]\\d{5}\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{2}$)')]],
       Phone: ['', [Validators.required, Validators.pattern('^1[0-9]{10}$')]],
       WX: ['', Validators.required],
-      Bank: ['工商银行'],
+      Bank: ['中国工商银行'],
       AccountName: ['', Validators.required],
-      BankAccount: ['', [Validators.required, Validators.pattern('^([1-9]{1})(\\d{14}|\\d{18})$')]],
+      BankAccount: ['', [Validators.required]],
       BankBranch: ['', Validators.required],
-      IDPhoto: [''],
-      BankPhoto: [''],
+      IDPhoto: ['', Validators.required],
+      BankPhoto: ['', Validators.required],
       BaoDanCenter: ['', Validators.required],
       Times: [''],
       ActivTime: [''],
@@ -80,9 +80,8 @@ export class EditComponent implements OnInit {
 
     $(function () {
       $('.bsrp-time').datetimepicker({
-        minView: 'month', // 选择日期后，不会再跳转去选择时分秒
         language: 'cn',
-        format: 'yyyy-mm-dd',
+        format: 'yyyy-mm-dd hh:ii:ss',
         todayBtn: 1,
         autoclose: 1,
       }).on('changeDate', function (ev) {
@@ -102,12 +101,14 @@ export class EditComponent implements OnInit {
 
   file() {
     let img1 = '';
-    const that = this;
+    var that = this;
     if (this.uploader.queue.length > 0) {
       // 上传
       this.uploader.queue[this.uploader.queue.length - 1].onSuccess = function (response, status, headers) {
         img1 = response;
-        that.formModel.get('IDPhoto').setValue(img1.replace(/\"/g, ''));
+        if(img1 !== ''){
+          that.formModel.get('IDPhoto').setValue(img1.replace(/\"/g, ''));
+        }
         this.uploader.clearQueue(); // 清除队列，如果不清除的话，还会继续上传第一个队列的图片
       };
       this.uploader.queue[this.uploader.queue.length - 1].upload(); // 开始上传
@@ -116,12 +117,14 @@ export class EditComponent implements OnInit {
 
   file2() {
     let img2 = '';
-    const that = this;
+    var that = this;
     if (this.uploader.queue.length > 0) {
       // 上传
       this.uploader.queue[this.uploader.queue.length - 1].onSuccess = function (response, status, headers) {
         img2 = response;
-        that.formModel.get('BankPhoto').setValue(img2.replace(/\"/g, ''));
+        if(img2 !== ''){
+          that.formModel.get('BankPhoto').setValue(img2.replace(/\"/g, ''));
+        }
         this.uploader.clearQueue(); // 清除队列，如果不清除的话，还会继续上传第一个队列的图片
       };
       this.uploader.queue[this.uploader.queue.length - 1].upload(); // 开始上传
@@ -130,12 +133,14 @@ export class EditComponent implements OnInit {
 
   file3() {
     let img3 = '';
-    const that = this;
+    var that = this;
     if (this.uploader.queue.length > 0) {
       // 上传
       this.uploader.queue[this.uploader.queue.length - 1].onSuccess = function (response, status, headers) {
         img3 = response;
-        that.formModel.get('Receipt').setValue(img3.replace(/\"/g, ''));
+        if(img3 != ''){
+          that.formModel.get('Receipt').setValue(img3.replace(/\"/g, ''));
+        }
         this.uploader.clearQueue(); // 清除队列，如果不清除的话，还会继续上传第一个队列的图片
       };
       this.uploader.queue[this.uploader.queue.length - 1].upload(); // 开始上传
@@ -174,7 +179,7 @@ export class EditComponent implements OnInit {
   GetTimes(time) {
     try {
       if (time != null) {
-        return time.split('T')[0];
+        return time.split('T')[0] + ' ' + time.split('T')[1].split();
       }
     } catch (e) {
       return time;

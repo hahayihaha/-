@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { HttpClient} from '@angular/common/http';
-import {FileUploader} from 'ng2-file-upload';
+import {FileItem, FileUploader, ParsedResponseHeaders} from 'ng2-file-upload';
 import 'rxjs/add/operator/debounceTime';
 import {Router} from '@angular/router';
 declare var $: any;
@@ -13,7 +13,10 @@ declare var $: any;
 })
 export class AddComponent implements OnInit {
   uploader: FileUploader = new FileUploader({url: localStorage['http'] + '/action/Users/UpFiles'});
+  uploader2: FileUploader = new FileUploader({url: localStorage['http'] + '/action/Users/UpFiles'});
+  uploader3: FileUploader = new FileUploader({url: localStorage['http'] + '/action/Users/UpFiles'});
   formModel: FormGroup;
+  public show: boolean = false;
 
   constructor(public fb: FormBuilder, public http: HttpClient, public router: Router) {
     this.formModel = fb.group({
@@ -25,9 +28,9 @@ export class AddComponent implements OnInit {
       IDNumber: ['', [Validators.required, Validators.pattern('(^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$)|(^[1-9]\\d{5}\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{2}$)')]],
       Phone: ['', [Validators.required, Validators.pattern('^1[0-9]{10}$')]],
       WX: ['', Validators.required],
-      Bank: ['工商银行'],
+      Bank: ['中国工商银行'],
       AccountName: ['', Validators.required],
-      BankAccount: ['', [Validators.required, Validators.pattern('^([1-9]{1})(\\d{14}|\\d{18})$')]],
+      BankAccount: ['', [Validators.required]],
       BankBranch: ['', Validators.required],
       IDPhoto: [''],
       BankPhoto: [''],
@@ -51,16 +54,19 @@ export class AddComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.uploader.onBeforeUploadItem = (item) => {
       item.withCredentials = false;
     };
 
+    this.uploader.onSuccessItem = (item, response, status, headers) => this.onSuccessItem(item, response, status, headers);
+    this.uploader2.onSuccessItem = (item, response, status, headers) => this.onSuccessItem2(item, response, status, headers);
+    this.uploader3.onSuccessItem = (item, response, status, headers) => this.onSuccessItem3(item, response, status, headers);
+
     $(function () {
       $('.bsrp-time').datetimepicker({
-        minView: 'month', // 选择日期后，不会再跳转去选择时分秒
+        // minView: 'month', // 选择日期后，不会再跳转去选择时分秒
         language: 'cn',
-        format: 'yyyy-mm-dd',
+        format: 'yyyy-mm-dd hh:ii:ss',
         todayBtn: 1,
         autoclose: 1,
       }).on('changeDate', function (ev) {
@@ -70,70 +76,73 @@ export class AddComponent implements OnInit {
     });
   }
 
-  file() {
-    let img1 = '';
-    const that = this;
-    if (this.uploader.queue.length > 0) {
-      // 上传
-      this.uploader.queue[this.uploader.queue.length - 1].onSuccess = function (response, status, headers) {
-        img1 = response;
-        that.formModel.get('IDPhoto').setValue(img1.replace(/\"/g, ''));
-        this.uploader.clearQueue(); // 清除队列，如果不清除的话，还会继续上传第一个队列的图片
-      };
-      this.uploader.queue[this.uploader.queue.length - 1].upload(); // 开始上传
+  onSuccessItem(item: FileItem, response: string, status: number, headers: ParsedResponseHeaders): any {
+    this.formModel.get('IDPhoto').setValue(response);
+    this.haha();
+  }
+  onSuccessItem2(item: FileItem, response: string, status: number, headers: ParsedResponseHeaders): any {
+    this.formModel.get('BankPhoto').setValue(response);
+    this.haha();
+  }
+  onSuccessItem3(item: FileItem, response: string, status: number, headers: ParsedResponseHeaders): any {
+    this.formModel.get('Receipt').setValue(response);
+    this.haha();
+  }
+
+
+  file(e) {
+    if(e.target.value == '')
+    {
+      this.uploader.removeFromQueue(this.uploader.queue[0]);
+    }else {
+      if (this.uploader.queue.length > 1) {
+        this.uploader.removeFromQueue(this.uploader.queue[0]);
+      }
+    }
+
+  }
+
+  file2(e) {
+    if(e.target.value == '')
+    {
+      this.uploader2.removeFromQueue(this.uploader2.queue[0]);
+    }else {
+      if (this.uploader2.queue.length > 1) {
+        this.uploader2.removeFromQueue(this.uploader2.queue[0]);
+      }
     }
   }
 
-  file2() {
-    let img2 = '';
-    const that = this;
-    if (this.uploader.queue.length > 0) {
-      // 上传
-      this.uploader.queue[this.uploader.queue.length - 1].onSuccess = function (response, status, headers) {
-        img2 = response;
-        that.formModel.get('BankPhoto').setValue(img2.replace(/\"/g, ''));
-        this.uploader.clearQueue(); // 清除队列，如果不清除的话，还会继续上传第一个队列的图片
-      };
-      this.uploader.queue[this.uploader.queue.length - 1].upload(); // 开始上传
-    }
-  }
-
-  file3() {
-    let img3 = '';
-    const that = this;
-    if (this.uploader.queue.length > 0) {
-      // 上传
-      this.uploader.queue[this.uploader.queue.length - 1].onSuccess = function (response, status, headers) {
-        img3 = response;
-        that.formModel.get('Receipt').setValue(img3.replace(/\"/g, ''));
-        this.uploader.clearQueue(); // 清除队列，如果不清除的话，还会继续上传第一个队列的图片
-      };
-      this.uploader.queue[this.uploader.queue.length - 1].upload(); // 开始上传
+  file3(e) {
+    if(e.target.value == '')
+    {
+      this.uploader3.removeFromQueue(this.uploader3.queue[0]);
+    }else {
+      if (this.uploader3.queue.length > 1) {
+        this.uploader3.removeFromQueue(this.uploader3.queue[0]);
+      }
     }
   }
 
   onSubmit(e) {
-    if (this.formModel.get('IDPhoto').value == '') {
-      alert('请上传身份证正面');
+    // 判断是否选择了上传图片
+    if(this.uploader.queue.length ==0)
+    {
+      alert('请上传身份证正面照片');
+      return false;
+    }
+    if (this.uploader2.queue.length ==0){
+      alert('请上传银行卡照片');
+      return false;
+    }
+    if (this.uploader3.queue.length ==0){
+      alert('请上传汇款小票照片');
       return false;
     }
 
-    if (this.formModel.get('BankPhoto').value == '') {
-      alert('请上传银行卡');
-      return false;
-    }
-    if (this.formModel.get('Receipt').value == '') {
-      alert('请上传汇款小票');
-      return false;
-    }
-
-    e.target.disabled = true;
-    this.http.post(localStorage['http'] + '/action/Users/PostUsers?xp=' + this.formModel.get('Receipt').value, this.formModel.value).subscribe(data => {
-      this.router.navigate(['/users']);
-    }, error2 => {
-      alert(error2.error.Message);
-      e.target.disabled = false;
-    });
+    this.uploader.queue[this.uploader.queue.length - 1].upload();
+    this.uploader2.queue[this.uploader2.queue.length - 1].upload();
+    this.uploader3.queue[this.uploader3.queue.length - 1].upload();
   }
 
   setSD(e) {
@@ -143,4 +152,35 @@ export class AddComponent implements OnInit {
   setED(e) {
     this.formModel.get('ActivTime').setValue(e);
   }
+
+  haha() {
+    if(this.formModel.value.IDPhoto != '' && this.formModel.value.BankPhoto != '' && this.formModel.value.Receipt != '')
+    {
+      // 判断图片是否正确上传成功
+      if(this.formModel.value.IDPhoto == '')
+      {
+        alert('请上传身份证正面照片');
+        return false;
+      }
+      if(this.formModel.value.BankPhoto == '')
+      {
+        alert('请上传银行卡照片');
+        return false;
+      }
+      if(this.formModel.value.Receipt == '')
+      {
+        alert('请上传汇款小票照片');
+        return false;
+      }
+
+      this.http.post(localStorage['http'] + '/action/Users/PostUsers?xp=' + this.formModel.get('Receipt').value, this.formModel.value).subscribe(data => {
+        this.router.navigate(['/users']);
+      }, error2 => {
+        alert(error2.error.Message);
+        this.show = false;
+        // e.target.disabled = false;
+      });
+    }
+  }
+
 }
