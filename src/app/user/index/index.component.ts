@@ -19,6 +19,7 @@ export class IndexComponent implements OnInit {
   BAC = '';
   st = '';
   ed = '';
+  public QX: number;
   public params: Array<any> = [];
   constructor(public http: HttpClient) {
 
@@ -42,6 +43,9 @@ export class IndexComponent implements OnInit {
     this.pagination.changePage = (() => {
       this.initList();
     });
+
+    this.QX = sessionStorage['Qx'];
+
   }
 
   private initList(): void {

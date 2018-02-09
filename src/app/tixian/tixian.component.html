@@ -23,7 +23,7 @@
       <input class="form-control bsrp-time" [(ngModel)]="ed" placeholder="结束时间" (blur)="setED($event.target.value)" type="">
     </div>
     <button class="btn btn-info" (click)="serach()">搜索</button>
-    <button class="btn btn-success" (click)="export()">导出数据</button>
+    <button class="btn btn-success" (click)="export()" *ngIf="QX == 0">导出数据</button>
   </div>
   <table class="table">
     <tr>

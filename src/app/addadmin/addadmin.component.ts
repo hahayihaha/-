@@ -21,8 +21,8 @@ export class AddadminComponent implements OnInit {
     this.formModel = fb.group({
       UserID: ['', [Validators.required, Validators.pattern('^[A-z][0-9A-z]{3,9}$')]],
       PassWord: ['', Validators.required],
-      Qx: ['', Validators.required],
-      // Times: ['', Validators.required]
+      confirm: ['', Validators.required],
+      Qx: ['1', Validators.required],
     })
   }
 

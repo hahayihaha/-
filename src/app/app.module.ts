@@ -23,6 +23,7 @@ import { XutoulistComponent } from './user/xutoulist/xutoulist.component';
 import { XutoueditComponent } from './column/xutouedit/xutouedit.component';
 import { LiushuiComponent } from './liushui/liushui.component';
 import { TixianComponent } from './tixian/tixian.component';
+import { AuthAdmin } from "./auth-admin";
 
 const root: Routes = [
   {path: '', redirectTo: '/', pathMatch: 'full'},
@@ -32,9 +33,11 @@ const root: Routes = [
     path: '',
     canActivate: [AuthGuard],
     children: [
-      {path: 'admin', component: AdminComponent},
-      {path: 'addadmin', component: AddadminComponent},
-      {path: 'modify/:id', component: ModifyComponent},
+      {path: '', canActivate: [AuthAdmin], children:[
+        {path: 'admin', component: AdminComponent, },
+        {path: 'addadmin', component: AddadminComponent},
+        {path: 'modify/:id', component: ModifyComponent}
+      ]},
       //流水
       {path: 'liushui', component: LiushuiComponent},
       //提现
@@ -84,7 +87,7 @@ const root: Routes = [
     ReactiveFormsModule,
     RouterModule.forRoot(root)
   ],
-  providers: [AuthGuard],
+  providers: [AuthGuard,AuthAdmin],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

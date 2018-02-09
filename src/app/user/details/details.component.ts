@@ -30,7 +30,6 @@ export class DetailsComponent implements OnInit {
   ngOnInit() {
 
     this.http.get(localStorage['http'] + '/manage/Users/GetView?id=' + this.ID).subscribe( response => {
-      console.log(response)
       this.data = (JSON.parse(response['data']));
       this.info = (JSON.parse(response['info']));
       this.infoBankBranch = this.info['BankBranch'];

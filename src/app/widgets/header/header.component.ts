@@ -8,9 +8,12 @@ import {Router} from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
 
+  public QX: number;
+
   constructor(public router: Router) { }
 
   ngOnInit() {
+    this.QX = sessionStorage['Qx'];
   }
 
   exit() {

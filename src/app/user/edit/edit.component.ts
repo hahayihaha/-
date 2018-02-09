@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { HttpClient} from '@angular/common/http';
-import {FileUploader} from 'ng2-file-upload';
+import {FileItem, FileUploader, ParsedResponseHeaders} from 'ng2-file-upload';
 import 'rxjs/add/operator/debounceTime';
 import {ActivatedRoute, Router} from '@angular/router';
 declare var $: any;
@@ -11,17 +11,28 @@ declare var $: any;
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.scss']
 })
+
 export class EditComponent implements OnInit {
   uploader: FileUploader = new FileUploader({url: localStorage['http'] + '/action/Users/UpFiles'});
+  uploader2: FileUploader = new FileUploader({url: localStorage['http'] + '/action/Users/UpFiles'});
   formModel: FormGroup;
   UserID;
+  public show: boolean = false;
+  btnOn: Boolean = false;
+  imgList = { jpg: 0, jpeg: 0, bmp: 0, png: 0, gif: 0};
+  imgErr1: Boolean = false;
+  imgErr2: Boolean = false;
+  public shangchuan1 = '';
+  public shangchuan1bool: boolean = false;
+  public shangchuan2 = '';
+  public shangchuan2bool: boolean = false;
   constructor(public fb: FormBuilder, public http: HttpClient, public router: Router, public routerinfo: ActivatedRoute) {
     const id = routerinfo.snapshot.params['id'];
 
     this.formModel = fb.group({
       ID: [id],
       Action: [1],
-      UserID: ['', [Validators.required, Validators.pattern('^[A-z][0-9A-z]{3,9}$')]],
+      UserID: ['', [Validators.required, Validators.pattern('^[A-z][0-9A-z]{3,15}$')]],
       PassWord: ['', [Validators.required, Validators.pattern('^[0-9A-z]{6,16}$')]],
       MingPass: [''],
       Name: ['', Validators.required],
@@ -35,8 +46,8 @@ export class EditComponent implements OnInit {
       AccountName: ['', Validators.required],
       BankAccount: ['', [Validators.required]],
       BankBranch: ['', Validators.required],
-      IDPhoto: ['', Validators.required],
-      BankPhoto: ['', Validators.required],
+      IDPhoto: [''],
+      BankPhoto: [''],
       BaoDanCenter: ['', Validators.required],
       Times: [''],
       ActivTime: [''],
@@ -96,76 +107,148 @@ export class EditComponent implements OnInit {
     this.uploader.onBeforeUploadItem = (item) => {
       item.withCredentials = false;
     };
+    this.uploader2.onBeforeUploadItem = (item) => {
+      item.withCredentials = false;
+    };
+
+    this.uploader.onSuccessItem = (item, response, status, headers) => this.onSuccessItem(item, response, status, headers);
+    this.uploader2.onSuccessItem = (item, response, status, headers) => this.onSuccessItem2(item, response, status, headers);
 
   }
 
-  file() {
-    let img1 = '';
-    var that = this;
-    if (this.uploader.queue.length > 0) {
-      // 上传
-      this.uploader.queue[this.uploader.queue.length - 1].onSuccess = function (response, status, headers) {
-        img1 = response;
-        if(img1 !== ''){
-          that.formModel.get('IDPhoto').setValue(img1.replace(/\"/g, ''));
-        }
-        this.uploader.clearQueue(); // 清除队列，如果不清除的话，还会继续上传第一个队列的图片
-      };
-      this.uploader.queue[this.uploader.queue.length - 1].upload(); // 开始上传
+  onSuccessItem(item: FileItem, response: string, status: number, headers: ParsedResponseHeaders): any {
+    const res = response.replace(/\"/g, '');
+    this.formModel.get('IDPhoto').setValue(res);
+    if (res == '' || res == 'null' || res == 'undefined') { // 上传错误
+      this.imgErr1 = true;
+      this.show = false;
+    } else {
+      this.imgErr1 = false;
+      this.haha();
+    }
+  }
+  onSuccessItem2(item: FileItem, response: string, status: number, headers: ParsedResponseHeaders): any {
+    const res = response.replace(/\"/g, '');
+    this.formModel.get('BankPhoto').setValue(res);
+    if (res == '' || res == 'null' || res == 'undefined') { // 上传错误
+      this.imgErr2 = true;
+      this.show = false;
+    } else {
+      this.imgErr2 = false;
+      this.haha();
     }
   }
 
-  file2() {
-    let img2 = '';
-    var that = this;
-    if (this.uploader.queue.length > 0) {
-      // 上传
-      this.uploader.queue[this.uploader.queue.length - 1].onSuccess = function (response, status, headers) {
-        img2 = response;
-        if(img2 !== ''){
-          that.formModel.get('BankPhoto').setValue(img2.replace(/\"/g, ''));
+  imgValid(img) {
+    const arr = img.split('.');
+    const exname = arr[arr.length - 1].toLowerCase();
+    return this.imgList[exname];
+  }
+
+  file(e) {
+    if (e.target.files && e.target.files[0]) {
+      var reader = new FileReader();
+      let that = this;
+      reader.onload = function(evt) {
+        let target: any = evt.target;
+        that.shangchuan1 = target.result;
+        if (that.shangchuan1 !== ''){
+          that.shangchuan1bool = true;
+        }else {
+          that.shangchuan1bool = false;
         }
-        this.uploader.clearQueue(); // 清除队列，如果不清除的话，还会继续上传第一个队列的图片
-      };
-      this.uploader.queue[this.uploader.queue.length - 1].upload(); // 开始上传
+      }
+      reader.readAsDataURL(e.target.files[0]);
+    }
+    this.formModel.get('IDPhoto').setValue('');
+    if (e.target.value == '' && this.uploader.queue.length >= 1) {
+      this.uploader.removeFromQueue(this.uploader.queue[0]);
+    }
+
+    if (this.uploader.queue.length > 1) {
+      this.uploader.removeFromQueue(this.uploader.queue[0]);
+    }
+    if (this.imgValid(e.target.value) == undefined) {
+      this.imgErr1 = true;
+    } else {
+      this.imgErr1 = false;
     }
   }
 
-  file3() {
-    let img3 = '';
-    var that = this;
-    if (this.uploader.queue.length > 0) {
-      // 上传
-      this.uploader.queue[this.uploader.queue.length - 1].onSuccess = function (response, status, headers) {
-        img3 = response;
-        if(img3 != ''){
-          that.formModel.get('Receipt').setValue(img3.replace(/\"/g, ''));
+  file2(e) {
+    if (e.target.files && e.target.files[0]) {
+      var reader = new FileReader();
+      let that = this;
+      reader.onload = function(evt) {
+        let target: any = evt.target;
+        that.shangchuan2 = target.result;
+        if (that.shangchuan2 !== ''){
+          that.shangchuan2bool = true;
+        }else {
+          that.shangchuan2bool = false;
         }
-        this.uploader.clearQueue(); // 清除队列，如果不清除的话，还会继续上传第一个队列的图片
-      };
-      this.uploader.queue[this.uploader.queue.length - 1].upload(); // 开始上传
+      }
+      reader.readAsDataURL(e.target.files[0]);
+    }
+    this.formModel.get('BankPhoto').setValue('');
+    if (e.target.value == '' && this.uploader2.queue.length >= 1) {
+      this.uploader2.removeFromQueue(this.uploader2.queue[0]);
+    }
+
+    if (this.uploader2.queue.length > 1) {
+      this.uploader2.removeFromQueue(this.uploader2.queue[0]);
+    }
+
+    if (this.imgValid(e.target.value) == undefined) {
+      this.imgErr2 = true;
+    } else {
+      this.imgErr2 = false;
     }
   }
 
   onSubmit(e) {
-    if (this.formModel.get('IDPhoto').value == '') {
-      alert('请上传身份证正面');
-      return false;
+    this.show = true;
+    //判断是否选择了上传图片
+    if(this.uploader.queue.length ==0 && this.uploader2.queue.length ==0)
+    {
+      console.log(this.formModel.value);
+      this.formModel.get('UserID').setValue(this.UserID);
+      this.http.put(localStorage['http'] + '/action/Users/PutUsers/' + this.formModel.get('ID').value, this.formModel.value).subscribe(data => {
+        this.show = false;
+        this.router.navigate(['/users']);
+      }, error2 => {
+        this.show = false;
+        alert(error2.error.Message);
+      });
+    }else {
+      if(this.formModel.value.IDPhoto.length < 10)
+      {
+        this.uploader.queue[this.uploader.queue.length - 1].upload();
+      }
+      if(this.formModel.value.BankPhoto.length < 10)
+      {
+        this.uploader2.queue[this.uploader2.queue.length - 1].upload();
+      }
     }
+  }
 
-    if (this.formModel.get('BankPhoto').value == '') {
-      alert('请上传银行卡');
-      return false;
-    }
-
-    e.target.disabled = true;
-    this.formModel.get('UserID').setValue(this.UserID);
-    this.http.put(localStorage['http'] + '/action/Users/PutUsers/' + this.formModel.get('ID').value, this.formModel.value).subscribe(data => {
-      this.router.navigate(['/users']);
-    }, error2 => {
-      alert(error2.error.Message);
-      e.target.disabled = false;
-    });
+  haha(){
+      // 判断图片是否正确上传成功
+      if(this.formModel.value.IDPhoto.indexOf('.') > 0 && this.formModel.value.BankPhoto.indexOf('.') > 0){
+        this.show = true;
+        this.formModel.get('UserID').setValue(this.UserID);
+        this.http.put(localStorage['http'] + '/action/Users/PutUsers/' + this.formModel.get('ID').value, this.formModel.value).subscribe(data => {
+          this.show = false;
+          this.btnOn = true;
+          this.router.navigate(['/users']);
+        }, error2 => {
+          this.show = false;
+          this.btnOn = false;
+          alert(error2.error.Message);
+        });
+      } else {
+        this.show = false;
+      }
   }
 
   setSD(e) {

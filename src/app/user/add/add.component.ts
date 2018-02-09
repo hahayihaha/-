@@ -17,12 +17,17 @@ export class AddComponent implements OnInit {
   uploader3: FileUploader = new FileUploader({url: localStorage['http'] + '/action/Users/UpFiles'});
   formModel: FormGroup;
   public show: boolean = false;
+  btnOn: Boolean = false;
+  imgList = { jpg: 0, jpeg: 0, bmp: 0, png: 0, gif: 0};
+  imgErr1: Boolean = false;
+  imgErr2: Boolean = false;
+  imgErr3: Boolean = false;
 
   constructor(public fb: FormBuilder, public http: HttpClient, public router: Router) {
     this.formModel = fb.group({
       Moneys: [10000, [Validators.required, Validators.min(10000), Validators.pattern('^[1-9]\\d*00$')]],
       Action: [1],
-      UserID: ['', [Validators.required, Validators.pattern('^[A-z][0-9A-z]{3,9}$')]],
+      UserID: ['', [Validators.required, Validators.pattern('^[A-z][0-9A-z]{3,15}$')]],
       PassWord: ['', [Validators.required, Validators.pattern('^[0-9A-z]{6,16}$')]],
       Name: ['', Validators.required],
       IDNumber: ['', [Validators.required, Validators.pattern('(^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$)|(^[1-9]\\d{5}\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{2}$)')]],
@@ -37,7 +42,7 @@ export class AddComponent implements OnInit {
       Receipt: [''],
       TJID: ['', Validators.required],
       BaoDanCenter: ['0000', Validators.required],
-      tjname: ['', Validators.required],
+      tjname: [''],
       Times: ['', Validators.required],
       ActivTime: [''],
       IsBaoDan: [0]
@@ -55,6 +60,12 @@ export class AddComponent implements OnInit {
 
   ngOnInit() {
     this.uploader.onBeforeUploadItem = (item) => {
+      item.withCredentials = false;
+    };
+    this.uploader2.onBeforeUploadItem = (item) => {
+      item.withCredentials = false;
+    };
+    this.uploader3.onBeforeUploadItem = (item) => {
       item.withCredentials = false;
     };
 
@@ -77,72 +88,130 @@ export class AddComponent implements OnInit {
   }
 
   onSuccessItem(item: FileItem, response: string, status: number, headers: ParsedResponseHeaders): any {
-    this.formModel.get('IDPhoto').setValue(response);
-    this.haha();
+    const res = response.replace(/\"/g, '');
+    this.formModel.get('IDPhoto').setValue(res);
+    if (res == '' || res == 'null' || res == 'undefined') { // 上传错误
+      this.imgErr1 = true;
+      this.show = false;
+    } else {
+      this.imgErr1 = false;
+      this.haha();
+    }
   }
   onSuccessItem2(item: FileItem, response: string, status: number, headers: ParsedResponseHeaders): any {
-    this.formModel.get('BankPhoto').setValue(response);
-    this.haha();
+    const res = response.replace(/\"/g, '');
+    this.formModel.get('BankPhoto').setValue(res);
+    if (res == '' || res == 'null' || res == 'undefined') { // 上传错误
+      this.imgErr2 = true;
+      this.show = false;
+    } else {
+      this.imgErr2 = false;
+      this.haha();
+    }
   }
   onSuccessItem3(item: FileItem, response: string, status: number, headers: ParsedResponseHeaders): any {
-    this.formModel.get('Receipt').setValue(response);
-    this.haha();
+    const res = response.replace(/\"/g, '');
+    this.formModel.get('Receipt').setValue(res);
+    if (res == '' || res == 'null' || res == 'undefined') { // 上传错误
+      this.imgErr3 = true;
+      this.show = false;
+    } else {
+      this.imgErr3 = false;
+      this.haha();
+    }
   }
 
+  imgValid(img) {
+    const arr = img.split('.');
+    const exname = arr[arr.length - 1].toLowerCase();
+    return this.imgList[exname];
+  }
 
   file(e) {
-    if(e.target.value == '')
-    {
+    this.formModel.get('IDPhoto').setValue('');
+    if (e.target.value == '' && this.uploader.queue.length >= 1) {
       this.uploader.removeFromQueue(this.uploader.queue[0]);
-    }else {
-      if (this.uploader.queue.length > 1) {
-        this.uploader.removeFromQueue(this.uploader.queue[0]);
-      }
     }
 
+    if (this.uploader.queue.length > 1) {
+      this.uploader.removeFromQueue(this.uploader.queue[0]);
+    }
+    if (this.imgValid(e.target.value) == undefined) {
+      this.imgErr1 = true;
+    } else {
+      this.imgErr1 = false;
+    }
   }
 
   file2(e) {
-    if(e.target.value == '')
-    {
+    this.formModel.get('BankPhoto').setValue('');
+    if (e.target.value == '' && this.uploader2.queue.length >= 1) {
       this.uploader2.removeFromQueue(this.uploader2.queue[0]);
-    }else {
-      if (this.uploader2.queue.length > 1) {
-        this.uploader2.removeFromQueue(this.uploader2.queue[0]);
-      }
+    }
+
+    if (this.uploader2.queue.length > 1) {
+      this.uploader2.removeFromQueue(this.uploader2.queue[0]);
+    }
+
+    if (this.imgValid(e.target.value) == undefined) {
+      this.imgErr2 = true;
+    } else {
+      this.imgErr2 = false;
     }
   }
 
   file3(e) {
-    if(e.target.value == '')
-    {
+    this.formModel.get('Receipt').setValue('');
+    if (e.target.value == '' && this.uploader3.queue.length >= 1) {
       this.uploader3.removeFromQueue(this.uploader3.queue[0]);
-    }else {
-      if (this.uploader3.queue.length > 1) {
-        this.uploader3.removeFromQueue(this.uploader3.queue[0]);
-      }
+    }
+
+    if (this.uploader3.queue.length > 1) {
+      this.uploader3.removeFromQueue(this.uploader3.queue[0]);
+    }
+
+    if (this.imgValid(e.target.value) == undefined) {
+      this.imgErr3 = true;
+    } else {
+      this.imgErr3 = false;
     }
   }
 
   onSubmit(e) {
-    // 判断是否选择了上传图片
-    if(this.uploader.queue.length ==0)
-    {
-      alert('请上传身份证正面照片');
-      return false;
-    }
-    if (this.uploader2.queue.length ==0){
-      alert('请上传银行卡照片');
-      return false;
-    }
-    if (this.uploader3.queue.length ==0){
-      alert('请上传汇款小票照片');
-      return false;
-    }
+    if (this.formModel.value.IDPhoto.length > 9 && this.formModel.value.BankPhoto.length > 9 && this.formModel.value.Receipt.length > 9) {
+      this.haha();
+    } else {
+      // 判断是否选择了上传图片
+      if (this.uploader.queue.length == 0) {
+        alert('请上传身份证正面照片');
+        return false;
+      } else if (this.formModel.value.IDPhoto.length < 10) {
+        this.show = true;
+        this.uploader.queue[this.uploader.queue.length - 1].upload();
+      } else {
+        this.show = false;
+      }
 
-    this.uploader.queue[this.uploader.queue.length - 1].upload();
-    this.uploader2.queue[this.uploader2.queue.length - 1].upload();
-    this.uploader3.queue[this.uploader3.queue.length - 1].upload();
+      if (this.uploader2.queue.length == 0) {
+        alert('请上传银行卡照片');
+        return false;
+      } else if (this.formModel.value.BankPhoto.length < 10) {
+        this.show = true;
+        this.uploader2.queue[this.uploader2.queue.length - 1].upload();
+      } else {
+        this.show = false;
+      }
+
+      if (this.uploader3.queue.length == 0) {
+        alert('请上传汇款小票照片');
+        return false;
+      } else if (this.formModel.value.Receipt.length < 10) {
+        this.show = true;
+        this.uploader3.queue[this.uploader3.queue.length - 1].upload();
+      } else {
+        this.show = false;
+      }
+    }
   }
 
   setSD(e) {
@@ -154,32 +223,21 @@ export class AddComponent implements OnInit {
   }
 
   haha() {
-    if(this.formModel.value.IDPhoto != '' && this.formModel.value.BankPhoto != '' && this.formModel.value.Receipt != '')
+    if(this.formModel.value.IDPhoto.indexOf('.') > 0 && this.formModel.value.BankPhoto.indexOf('.') > 0 && this.formModel.value.Receipt.indexOf('.') > 0)
     {
-      // 判断图片是否正确上传成功
-      if(this.formModel.value.IDPhoto == '')
-      {
-        alert('请上传身份证正面照片');
-        return false;
-      }
-      if(this.formModel.value.BankPhoto == '')
-      {
-        alert('请上传银行卡照片');
-        return false;
-      }
-      if(this.formModel.value.Receipt == '')
-      {
-        alert('请上传汇款小票照片');
-        return false;
-      }
+      this.show = true;
+      this.btnOn = true;
 
       this.http.post(localStorage['http'] + '/action/Users/PostUsers?xp=' + this.formModel.get('Receipt').value, this.formModel.value).subscribe(data => {
+        this.show = false;
         this.router.navigate(['/users']);
       }, error2 => {
         alert(error2.error.Message);
         this.show = false;
-        // e.target.disabled = false;
+        this.btnOn = false;
       });
+    } else {
+      this.show = false;
     }
   }
 

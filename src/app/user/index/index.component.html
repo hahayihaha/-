@@ -24,7 +24,7 @@
   <button class="btn btn-info" (click)="serach()">搜索</button>
   <p style="float: right; display: block;">
     <a routerLink="/users/add" class="btn btn-success">添加会员</a>
-    <a href="javaScript:;" class="btn btn-success btn-" (click)="export()">导出表格</a>
+    <a href="javaScript:;" class="btn btn-success btn-" *ngIf="QX == 0" (click)="export()">导出表格</a>
   </p>
 </div>
 <div style="margin-top: 20px">

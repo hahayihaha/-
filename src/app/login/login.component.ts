@@ -30,6 +30,23 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
 
+    // document.onkeydown = (e) => {
+    //   if (this.formModel.get('u').value !== '' && this.formModel.get('p').value !== ''){
+    //     if (e.keyCode == 13){
+    //       this.signIn(e);
+    //     }
+    //   }else {
+    //     if (e.keyCode == 13){
+    //       if(this.formModel.get('u').value == ''){
+    //         alert('请填写用户名');
+    //       }
+    //       if(this.formModel.get('p').value == ''){
+    //         alert('请填写密码');
+    //       }
+    //     }
+    //   }
+    // }
+
   }
 
   signIn(event){
@@ -37,8 +54,9 @@ export class LoginComponent implements OnInit {
     this.http.post(localStorage['http'] + '/manage/Login/Login', this.formModel.value).subscribe( response => {
       if(response.json()){
         this.router.navigate(['/users']);
-        sessionStorage.setItem('ID', response.json());
+        sessionStorage.setItem('ID', response.json()['ID']);
         sessionStorage.setItem('UserID', this.formModel.get('u').value);
+        sessionStorage.setItem('Qx', response.json()['Qx'])
       }
     }, error => {
       event.target.disabled = false;

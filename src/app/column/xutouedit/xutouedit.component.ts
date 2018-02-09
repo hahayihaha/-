@@ -99,7 +99,6 @@ export class XutoueditComponent implements OnInit {
   }
 
   onSubmit(e) {
-    console.log(this.formModel.get('Receipt').value)
     if (this.formModel.get('Receipt').value == '') {
       alert('请上传汇款小票');
       return false;

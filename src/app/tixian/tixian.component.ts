@@ -17,6 +17,7 @@ export class TixianComponent implements OnInit {
   bank = '';
   sd = '';
   ed = '';
+  public QX: number;
 
   constructor(
     public http: HttpClient
@@ -40,6 +41,7 @@ export class TixianComponent implements OnInit {
     this.pagination.changePage = (() => {
       this.initList();
     });
+    this.QX = sessionStorage['Qx'];
   }
 
   private initList(): void {

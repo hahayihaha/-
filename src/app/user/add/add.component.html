@@ -1,5 +1,12 @@
 <div id="loading" *ngIf="show">
-  <div class="loader">加载中...</div>
+  <div class="spinner">
+    <div class="rect1"></div>
+    <div class="rect2"></div>
+    <div class="rect3"></div>
+    <div class="rect4"></div>
+    <div class="rect5"></div>
+    <p>图片正在上传，请稍后...</p>
+  </div>
 </div>
 <app-header></app-header>
 <div class="body-content">
@@ -50,7 +57,7 @@
         <label class="control-label col-md-2">会员账号</label>
         <div class="col-md-10">
           <input class="form-control text-box single-line" id="0" type="text" formControlName="UserID"/>
-          <span class="field-validation-valid text-danger" *ngIf="formModel.get('UserID').touched && formModel.get('UserID').invalid">以字母开头的4-10位英文+数字</span>
+          <span class="field-validation-valid text-danger" *ngIf="formModel.get('UserID').touched && formModel.get('UserID').invalid">以字母开头的4-16位英文+数字</span>
         </div>
       </div>
 
@@ -99,21 +106,8 @@
         <div class="col-md-10">
           <select class="form-control" formControlName="Bank">
             <option value="中国工商银行">中国工商银行</option>
-            <!--<option value="中国银行">中国银行</option>-->
-            <!--<option value="交通银行">交通银行</option>-->
             <option value="中国建设银行">中国建设银行</option>
             <option value="中国农业银行">中国农业银行</option>
-            <!--<option value="招商银行">招商银行</option>-->
-            <!--<option value="中国邮政储蓄银行">中国邮政储蓄银行</option>-->
-            <!--<option value="兴业银行">兴业银行</option>-->
-            <!--<option value="浦发银行">浦发银行</option>-->
-            <!--<option value="民生银行">民生银行</option>-->
-            <!--<option value="光大银行">光大银行</option>-->
-            <!--<option value="广发银行">广发银行</option>-->
-            <!--<option value="平安银行">平安银行</option>-->
-            <!--<option value="中信银行">中信银行</option>-->
-            <!--<option value="华夏银行">华夏银行</option>-->
-            <!--<option value="北京银行">北京银行</option>-->
           </select>
         </div>
       </div>
@@ -145,21 +139,24 @@
       <div class="form-group">
         <label class="control-label col-md-2">身份证正面</label>
         <div class="col-md-10">
-          <input type="file" id="img1" ng2FileSelect [uploader]="uploader" (change)="file($event)"/>
+          <input type="file" id="img1" ng2FileSelect [uploader]="uploader" (change)="file($event)" class="file"/>
+          <span class="field-validation-valid text-danger" *ngIf="imgErr1">身份证正面错误</span>
         </div>
       </div>
 
       <div class="form-group">
         <label class="control-label col-md-2">银行卡</label>
         <div class="col-md-10">
-          <input type="file" id="img2" ng2FileSelect [uploader]="uploader2" (change)="file2($event)" />
+          <input type="file" id="img2" ng2FileSelect [uploader]="uploader2" (change)="file2($event)" class="file"/>
+          <span class="field-validation-valid text-danger" *ngIf="imgErr2">银行卡正面错误</span>
         </div>
       </div>
 
       <div class="form-group">
         <label class="control-label col-md-2">汇款小票</label>
         <div class="col-md-10">
-          <input type="file" id="img3" ng2FileSelect [uploader]="uploader3" (change)="file3($event)" />
+          <input type="file" id="img3" ng2FileSelect [uploader]="uploader3" (change)="file3($event)" class="file"/>
+          <span class="field-validation-valid text-danger" *ngIf="imgErr3">汇款小票照片错误</span>
         </div>
       </div>
 
@@ -195,7 +192,7 @@
 
       <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-          <button class="btn btn-success" (click)="onSubmit($event)" [disabled]="formModel.invalid">添加</button>
+          <button class="btn btn-success" (click)="onSubmit($event)" [disabled]="formModel.invalid || btnOn || imgErr1 || imgErr2 || imgErr3">添加</button>
         </div>
       </div>
 

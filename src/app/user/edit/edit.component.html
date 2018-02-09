@@ -1,3 +1,13 @@
+<div id="loading" *ngIf="show">
+  <div class="spinner">
+    <div class="rect1"></div>
+    <div class="rect2"></div>
+    <div class="rect3"></div>
+    <div class="rect4"></div>
+    <div class="rect5"></div>
+    <p>图片正在上传，请稍后...</p>
+  </div>
+</div>
 <app-header></app-header>
 <div class="body-content">
   <h2>修改</h2>
@@ -131,16 +141,21 @@
       <div class="form-group">
         <label class="control-label col-md-2">身份证正面</label>
         <div class="col-md-10">
-          <input type="file" id="img1" ng2FileSelect [uploader]="uploader" (change)="file()" />
-          <img src="{{getImg(formModel.get('IDPhoto').value)}}" alt="" height="100">
+          <input type="file" id="img1" ng2FileSelect [uploader]="uploader" (change)="file($event)" class="file"/>
+          <span class="field-validation-valid text-danger" *ngIf="imgErr1">身份证正面错误</span>
+          <img *ngIf="shangchuan1bool" src="{{shangchuan1}}" height="100" >
+          <img *ngIf="!shangchuan1bool" src="{{getImg(formModel.get('IDPhoto').value)}}" alt="" height="100">
         </div>
       </div>
 
       <div class="form-group">
         <label class="control-label col-md-2">银行卡</label>
         <div class="col-md-10">
-          <input type="file" id="img2" ng2FileSelect [uploader]="uploader" (change)="file2()" />
-          <img src="{{getImg(formModel.get('BankPhoto').value)}}" alt="" height="100">
+          <input type="file" id="img2" ng2FileSelect [uploader]="uploader2" (change)="file2($event)"/>
+          <div id="preview1"></div>
+          <span class="field-validation-valid text-danger" *ngIf="imgErr2">银行卡照片错误</span>
+          <img *ngIf="shangchuan2bool" src="{{shangchuan2}}" height="100" >
+          <img *ngIf="!shangchuan2bool" src="{{getImg(formModel.get('BankPhoto').value)}}" alt="" height="100">
         </div>
       </div>
 
@@ -160,16 +175,14 @@
 
       <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-          <button class="btn btn-success" (click)="onSubmit($event)" [disabled]="formModel.invalid">修改</button>
+          <button class="btn btn-success" (click)="onSubmit($event)" [disabled]="formModel.invalid || imgErr1 || imgErr2">修改</button>
         </div>
       </div>
-
     </div>
   </form>
   <div>
     <a routerLink="/users">返回列表</a>
   </div>
-
 
   <app-footer></app-footer>
 </div>
